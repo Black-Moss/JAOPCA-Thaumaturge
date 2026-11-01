@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "jaopcaexdeorum:item/metallic/thaumaturge_cluster",
-    "layer1": "jaopcaexdeorum:item/metallic/thaumaturge_cluster_overlay"
-  }
-}

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "jaopcathaumaturge:item/metallic/thaumaturge_cluster",
+    "layer1": "jaopcathaumaturge:item/metallic/thaumaturge_cluster_overlay"
+  }
+}
