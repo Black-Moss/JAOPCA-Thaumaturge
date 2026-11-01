@@ -26,12 +26,18 @@ import java.util.*;
 public class ThaumaturgeCompatModule implements IModule {
     public static final String FORM_NAME = "thaumaturge_cluster";
 
-    // Thaumaturge already provides native clusters for these materials.
     private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-            "cinnabar", "copper", "gold", "iron", "lead", "quartz", "silver", "tin"));
+            "cinnabar",
+            "copper",
+            "gold",
+            "iron",
+            "lead",
+            "quartz",
+            "silver",
+            "tin"));
 
-    // Only materials that have an ore, a raw material and an ingot (MaterialType.INGOT).
-    private static final Set<MaterialType> MATERIAL_TYPES = EnumSet.of(MaterialType.INGOT);
+    private static final Set<MaterialType> MATERIAL_TYPES = EnumSet.of(
+            MaterialType.INGOT);
 
     private static boolean addClusterRecipes = true;
     private static IDynamicSpecConfig moduleConfig;
