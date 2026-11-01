@@ -2,7 +2,7 @@ package com.blackmoss.jaopcathaumaturge.compat.thaumaturge;
 
 import com.blackmoss.jaopcathaumaturge.JAOPCAThaumaturge;
 import com.blackmoss.jaopcathaumaturge.compat.thaumaturge.recipes.CrucibleClusterRecipeSerializer;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -77,7 +77,7 @@ public class ThaumaturgeCompatModule implements IModule {
         JAOPCAApi api = ApiImpl.INSTANCE;
         IMiscHelper miscHelper = MiscHelper.INSTANCE;
         IItemFormType itemFormType = ItemFormType.INSTANCE;
-        Set<Identifier> itemTags = api.getItemTags();
+        Set<ResourceLocation> itemTags = api.getItemTags();
         int clusterCount = 0;
         int recipeCount = 0;
         for (IMaterial material : clusterForm.getMaterials()) {
@@ -86,8 +86,8 @@ public class ThaumaturgeCompatModule implements IModule {
                 continue;
             }
             String name = material.getName();
-            Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", name);
-            Identifier materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), name);
+            ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", name);
+            ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), name);
             if (!itemTags.contains(materialLocation)) {
                 JAOPCAThaumaturge.LOGGER.warn(
                         "Skipping Thaumaturge cluster for material {} since it lacks the material tag {}",
