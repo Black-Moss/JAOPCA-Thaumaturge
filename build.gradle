@@ -38,11 +38,6 @@ repositories {
         name = "Illusive Soulworks"
         url = "https://maven.theillusivec4.top/"
     }
-
-    maven {
-        name = "blakesmodsReleases"
-        url = "https://maven.blakesmods.com/releases"
-    }
 }
 
 base {
@@ -97,6 +92,10 @@ configurations {
 dependencies {
     // Lithostitched
     implementation "maven.modrinth:lithostitched:${lithostitched_version}"
+
+    // Curios
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
     // Thaumaturge
     implementation "curse.maven:thaumaturge-1628024:${thaumaturge_version}"
