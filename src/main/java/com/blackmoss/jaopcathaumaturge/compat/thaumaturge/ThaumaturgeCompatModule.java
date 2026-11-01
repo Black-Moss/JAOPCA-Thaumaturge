@@ -1,6 +1,7 @@
 package com.blackmoss.jaopcathaumaturge.compat.thaumaturge;
 
 import com.blackmoss.jaopcathaumaturge.JAOPCAThaumaturge;
+import com.blackmoss.jaopcathaumaturge.compat.thaumaturge.recipes.CrucibleClusterRecipeSerializer;
 import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -25,18 +26,12 @@ import java.util.*;
 public class ThaumaturgeCompatModule implements IModule {
     public static final String FORM_NAME = "thaumaturge_cluster";
 
+    // Thaumaturge already provides native clusters for these materials.
     private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-            "cinnabar",
-            "copper",
-            "gold",
-            "iron",
-            "lead",
-            "quartz",
-            "silver",
-            "tin"));
+            "cinnabar", "copper", "gold", "iron", "lead", "quartz", "silver", "tin"));
 
-    private static final Set<MaterialType> MATERIAL_TYPES = EnumSet.of(
-            MaterialType.INGOT);
+    // Only materials that have an ore, a raw material and an ingot (MaterialType.INGOT).
+    private static final Set<MaterialType> MATERIAL_TYPES = EnumSet.of(MaterialType.INGOT);
 
     private static boolean addClusterRecipes = true;
     private static IDynamicSpecConfig moduleConfig;
@@ -70,14 +65,14 @@ public class ThaumaturgeCompatModule implements IModule {
     public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
         moduleConfig = Objects.requireNonNull(config);
         addClusterRecipes = config.getDefinedBoolean("recipes.cluster_recipes", addClusterRecipes,
-                "Should recipes that produce Thaumaturge clusters from ore and smelt them back into 2 materials be added.");
+                "Should recipes that produce Thaumaturge clusters from raw materials in the crucible and smelt them back into 2 ingots be added.");
     }
 
     @Override
     public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
         if (moduleConfig != null) {
             addClusterRecipes = moduleConfig.getDefinedBoolean("recipes.cluster_recipes", addClusterRecipes,
-                    "Should recipes that produce Thaumaturge clusters from ore and smelt them back into 2 materials be added.");
+                    "Should recipes that produce Thaumaturge clusters from raw materials in the crucible and smelt them back into 2 ingots be added.");
         }
         JAOPCAApi api = ApiImpl.INSTANCE;
         IMiscHelper miscHelper = MiscHelper.INSTANCE;
@@ -90,37 +85,37 @@ public class ThaumaturgeCompatModule implements IModule {
             if (clusterInfo == null) {
                 continue;
             }
-            Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
-            Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
-            Identifier materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+            String name = material.getName();
+            Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", name);
+            Identifier materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), name);
             if (!itemTags.contains(materialLocation)) {
                 JAOPCAThaumaturge.LOGGER.warn(
                         "Skipping Thaumaturge cluster for material {} since it lacks the material tag {}",
-                        material.getName(), materialLocation);
+                        name, materialLocation);
                 continue;
             }
-            Identifier sourceLocation = itemTags.contains(rawMaterialLocation)
-                    ? rawMaterialLocation
-                    : (itemTags.contains(oreLocation)
-                    ? oreLocation
-                    : null);
+            if (!itemTags.contains(rawMaterialLocation)) {
+                JAOPCAThaumaturge.LOGGER.warn(
+                        "Skipping Thaumaturge cluster for material {} since it lacks the raw material tag {}",
+                        name, rawMaterialLocation);
+                continue;
+            }
             ++clusterCount;
             if (!addClusterRecipes) {
                 continue;
             }
-            if (sourceLocation != null
-                    && api.registerShapelessRecipe(
-                    JAOPCAThaumaturge.identifier("cluster_" + material.getName() + "_from_source"),
-                    clusterInfo, 1, sourceLocation)) {
+            if (api.registerRecipe(
+                    JAOPCAThaumaturge.identifier("crucible/" + name + "_cluster"),
+                    new CrucibleClusterRecipeSerializer(name))) {
                 ++recipeCount;
             }
             if (api.registerSmeltingRecipe(
-                    JAOPCAThaumaturge.identifier("cluster_" + material.getName() + "_smelting"),
+                    JAOPCAThaumaturge.identifier("cluster_" + name + "_smelting"),
                     clusterInfo, materialLocation, 2, 1F, 200)) {
                 ++recipeCount;
             }
             if (api.registerBlastingRecipe(
-                    JAOPCAThaumaturge.identifier("cluster_" + material.getName() + "_blasting"),
+                    JAOPCAThaumaturge.identifier("cluster_" + name + "_blasting"),
                     clusterInfo, materialLocation, 2, 1F, 100)) {
                 ++recipeCount;
             }
