@@ -1,0 +1,39 @@
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/Black-Moss/JAOPCA-Thaumaturge/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+logoFile = "logo.png"
+authors = "${mod_authors}"
+description = "${mod_description}"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/jaopca-thaumaturge"
+
+[[dependencies.${ mod_id }]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neo_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "jaopca"
+type = "required"
+versionRange = "[5.0.14.23,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "thaumaturge"
+type = "required"
+versionRange = "[1.0.2,)"
+ordering = "AFTER"
+side = "BOTH"
