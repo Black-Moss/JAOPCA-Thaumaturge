@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "jaopcaexdeorum:item/metallic/exdeorum_ore_chunk",
+    "layer1": "jaopcaexdeorum:item/metallic/exdeorum_ore_chunk_overlay"
+  }
+}
