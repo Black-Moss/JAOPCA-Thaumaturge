@@ -1,5 +1,6 @@
 package com.blackmoss.jaopcathaumaturge;
 
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -14,5 +15,9 @@ public class JAOPCAThaumaturge {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public JAOPCAThaumaturge(IEventBus modEventBus, ModContainer modContainer) {
+    }
+
+    public static Identifier identifier(String path) {
+        return Identifier.fromNamespaceAndPath(MODID, path);
     }
 }
