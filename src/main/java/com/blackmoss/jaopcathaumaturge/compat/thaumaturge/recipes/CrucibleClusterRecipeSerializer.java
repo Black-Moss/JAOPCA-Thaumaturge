@@ -42,7 +42,9 @@ public class CrucibleClusterRecipeSerializer implements IRecipeSerializer {
         aspects.add(ordo);
         recipe.add("aspects", aspects);
 
-        recipe.addProperty("catalyst", "#c:raw_materials/" + materialName);
+        JsonObject catalyst = new JsonObject();
+        catalyst.addProperty("tag", "c:raw_materials/" + materialName);
+        recipe.add("catalyst", catalyst);
 
         JsonObject research = new JsonObject();
         research.addProperty("entry", "thaumaturge:metal_purification");
